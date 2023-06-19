@@ -1,34 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import { Routes, Route ,Navigate} from "react-router-dom";
-import Home from "./components/Home";
 import Profile from "./components/Profile";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
+import PublicRoute from "./components/routes/PublicRoute";
 
 const App = () => {
-  const user = true;
+  const [user, setuser] = useState()
+  const getToken = ()=>{
+    const data = localStorage.getItem("user")
+    console.log(data,'user')
+    setuser(data)
+  }
+ 
+  useEffect(() => {
+    getToken()
+    console.log("hello")
+    
+  })
+  
   return (
     <>
       <Routes>
         <Route
           path="/"
-          element={user ? <Navigate to="home" /> : <Navigate to="/login" />}
+          element={<Navigate to="/profile" />}
         />
         <Route
           path="/login"
-          element={user ? <Navigate to="../home" /> : <Login />}
+          element={<PublicRoute><Login /></PublicRoute>}
         />
         <Route
           path="/register"
-          element={user ? <Navigate to="../home" /> : <Register />}
-        />
-        <Route
-          path="/home"
-          element={user ? <Home /> : <Navigate to="../login" />}
+          element={<PublicRoute><Register /></PublicRoute> }
         />
         <Route
           path="/profile"
-          element={user ? <Profile /> : <Navigate to="../login" />}
+          element={<ProtectedRoute><Profile/></ProtectedRoute>}
         />
       </Routes>
     </>

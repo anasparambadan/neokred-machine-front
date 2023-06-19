@@ -3,12 +3,14 @@ import hero from "../assets/images/hero.svg";
 import { useFormik } from "formik";
 import { loginSchema } from "../validation";
 import { login } from "../api/authRequrest";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const initialValues = {
     email: "",
     password: "",
   };
+  const navigate =  useNavigate()
 
   const {
     values,
@@ -25,6 +27,9 @@ const Login = () => {
     onSubmit: async (values, action) => {
       const user = await login(values);
       localStorage.setItem("user", JSON.stringify(user.data));
+      navigate('/profile')
+
+
       action.resetForm();
     },
 
@@ -35,9 +40,9 @@ const Login = () => {
 
   return (
     <div className="">
-      <div className="flex md:flex-row  h-screen  ">
+      <div className="flex md:flex-row  h-screen items-center">
         <div className=" md:w-2/5 hidden md:block xl:w-3/5 lg:w-2/4 m-5 bg-white">
-          <div className="bg-myBackground bg-cove rounded-3xl bg-center h-[93vh] ">
+          <div className="bg-myBackground bg-cover rounded-3xl bg-center h-[93vh] ">
             <div className="py-8 px-6">
               <img src={hero} alt="hero" />
             </div>
@@ -94,18 +99,22 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="  mt-5  flex">
-                  <button
-                    className=" bg-[#194DFF] rounded-[6px] text-white text-sm py-[7px] text-center self-start px-10 w-[60%] mt-1"
-                    type="submit"
-                  >
-                    Login
-                  </button>
+                  
+                    <button
+                      className=" bg-[#194DFF] rounded-[6px] text-white text-sm py-[7px] text-center self-start px-10 w-[60%] mt-1"
+                      type="submit"
+                    >
+                Login
+                    </button>
+                 
                   <div className=""></div>
                 </div>
                 <div className="mt-5">
                   <div className=" text-zinc-400">
                     Don't have an accouunt ?{" "}
+                    <Link to={"/register"}>
                     <span className="text-blue-600 underline"> Sign up</span>
+                    </Link>
                   </div>
                 </div>
               </div>

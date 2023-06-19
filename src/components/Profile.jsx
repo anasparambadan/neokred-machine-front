@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import hero from "../assets/images/hero.svg";
 import profile from "../assets/images/profile.svg";
 import { getProfile } from "../api/userRequest";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [userDetails, setuserDetails] = useState({});
@@ -15,6 +16,10 @@ const Profile = () => {
     getUser();
   }, []);
 
+  const logOut = () => {
+    localStorage.clear();
+  };
+
   return (
     <div>
       <nav className="h-[72px] max-w-[1920px] w-full flex justify-between px-10 border-b-2 border-gray-500 items-center">
@@ -24,7 +29,11 @@ const Profile = () => {
         <div className="flex flex-col text-sm">
           <span className="text-lightGrey">{userDetails.fullName}</span>
           <span>NK admin</span>
-          <span className="cursor-pointer">Log out</span>
+          <Link to={"/login"}>
+            <span className="cursor-pointer" onClick={logOut}>
+              Log out
+            </span>
+          </Link>
         </div>
       </nav>
       <div className="flex justify-center items-start gap-10 mt-5">

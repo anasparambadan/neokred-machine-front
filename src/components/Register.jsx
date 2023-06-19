@@ -3,8 +3,10 @@ import heroIcon from "../assets/images/hero.svg";
 import { useFormik } from "formik";
 import { registerSchema } from "../validation";
 import { register } from "../api/authRequrest";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate()
   const initialValues = {
     fullName: "",
     email: "",
@@ -26,12 +28,11 @@ const Register = () => {
 
       onSubmit: async (values, action) => {
        
-
         const { confirmPassword, ...formData } = values;
    
         const user = await register(formData);
         localStorage.setItem("user", JSON.stringify(user.data))
-
+        navigate('/profile')
         action.resetForm();
       },
       onClick: (action) => {
@@ -41,8 +42,8 @@ const Register = () => {
 
   return (
     <div className="register h-screen flex max-w-[1920px] px-4 py-5 gap-10">
-      <div className="reg-left bg-myBackground bg-cover h-full w-3/6 rounded-3xl">
-        <img src={heroIcon} alt="" />
+      <div className="reg-left bg-myBackground bg-cover h-full w-3/6 rounded-3xl relative">
+        <img src={heroIcon} alt=""  className="absolute top-6 left-6"/>
       </div>
       <div className="reg-right w-full flex flex-col gap-2 h-full px-10">
         <div>
@@ -50,14 +51,14 @@ const Register = () => {
           <h1 className="text-3xl font-semibold">Sign Up</h1>
         </div>
 
-        <div className="mt-[20px] grid grid-cols-2 gap-x-10 gap-y-1">
+        <div className=" grid grid-cols-2 gap-x-10 gap-y-1">
           <div className="flex flex-col">
             <label htmlFor="fullName" className="text-sm text-labelGrey">
               Full name
             </label>
             <input
               type="text"
-              placeholder="john Doe"
+              placeholder="Full Name"
               name="fullName"
               id="fullName"
               value={values.fullName}
@@ -77,7 +78,7 @@ const Register = () => {
             </label>
             <input
               type="text"
-              placeholder="allthebest@neokred.com"
+              placeholder="Email"
               name="email"
               id="email"
               value={values.email}
@@ -156,7 +157,7 @@ const Register = () => {
               Confirm Password
             </label>
             <input
-              type="text"
+              type="password"
               placeholder="*********"
               name="confirmPassword"
               id="confirmPassword"
@@ -171,8 +172,7 @@ const Register = () => {
               </span>
             ) : null}
           </div>
-        </div>
-        <div className="w-1/2 mt-1">
+        <div className="mt-2">
           <p className="text-sm">Security Question</p>
           <label htmlFor="security" className="text-sm text-labelGrey">
             What is your School name ?
@@ -192,6 +192,7 @@ const Register = () => {
               {errors.security}
             </span>
           ) : null}
+        </div>
         </div>
         <div>
           <label htmlFor="address" className="text-sm text-labelGrey">
@@ -302,8 +303,8 @@ const Register = () => {
         >
           Sign Up
         </button>
-        <p className="">
-          Already have an account? <span className="underline">Login</span>
+        <p className="text-titleGrey">
+          Already have an account? <Link to={'/login'}><span className="underline text-blue-600">Login</span></Link>
         </p>
       </div>
     </div>
