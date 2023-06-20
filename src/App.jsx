@@ -6,20 +6,7 @@ import Profile from "./components/Profile";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import PublicRoute from "./components/routes/PublicRoute";
 
-const App = () => {
-  const [user, setuser] = useState()
-  const getToken = ()=>{
-    const data = localStorage.getItem("user")
-    console.log(data,'user')
-    setuser(data)
-  }
- 
-  useEffect(() => {
-    getToken()
-    console.log("hello")
-    
-  })
-  
+const App = () => {  
   return (
     <>
       <Routes>

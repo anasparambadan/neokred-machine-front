@@ -4,13 +4,14 @@ import { useFormik } from "formik";
 import { loginSchema } from "../validation";
 import { login } from "../api/authRequrest";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const initialValues = {
     email: "",
     password: "",
   };
-  const navigate =  useNavigate()
+  const navigate = useNavigate();
 
   const {
     values,
@@ -25,12 +26,16 @@ const Login = () => {
     validationSchema: loginSchema,
 
     onSubmit: async (values, action) => {
-      const user = await login(values);
-      localStorage.setItem("user", JSON.stringify(user.data));
-      navigate('/profile')
-
-
-      action.resetForm();
+      try {
+        const user = await login(values);
+        localStorage.setItem("user", JSON.stringify(user.data));
+        toast.success("Login Success");
+        navigate("/profile");
+        action.resetForm();
+      } catch (error) {
+        console.log(error, "error");
+        toast.error(error.response.data.message);
+      }
     },
 
     onClick: (values, action) => {
@@ -40,6 +45,7 @@ const Login = () => {
 
   return (
     <div className="">
+      <Toaster />
       <div className="flex md:flex-row  h-screen items-center">
         <div className=" md:w-2/5 hidden md:block xl:w-3/5 lg:w-2/4 m-5 bg-white">
           <div className="bg-myBackground bg-cover rounded-3xl bg-center h-[93vh] ">
@@ -99,21 +105,20 @@ const Login = () => {
                   </div>
                 </div>
                 <div className="  mt-5  flex">
-                  
-                    <button
-                      className=" bg-[#194DFF] rounded-[6px] text-white text-sm py-[7px] text-center self-start px-10 w-[60%] mt-1"
-                      type="submit"
-                    >
-                Login
-                    </button>
-                 
+                  <button
+                    className=" bg-[#194DFF] rounded-[6px] text-white text-sm py-[7px] text-center self-start px-10 w-[60%] mt-1"
+                    type="submit"
+                  >
+                    Login
+                  </button>
+
                   <div className=""></div>
                 </div>
                 <div className="mt-5">
                   <div className=" text-zinc-400">
                     Don't have an accouunt ?{" "}
                     <Link to={"/register"}>
-                    <span className="text-blue-600 underline"> Sign up</span>
+                      <span className="text-blue-600 underline"> Sign up</span>
                     </Link>
                   </div>
                 </div>

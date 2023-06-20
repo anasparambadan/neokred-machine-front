@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { registerSchema } from "../validation";
 import { register } from "../api/authRequrest";
 import { Link, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Register = () => {
   const navigate = useNavigate()
@@ -27,13 +28,17 @@ const Register = () => {
       validationSchema: registerSchema,
 
       onSubmit: async (values, action) => {
-       
         const { confirmPassword, ...formData } = values;
-   
-        const user = await register(formData);
-        localStorage.setItem("user", JSON.stringify(user.data))
-        navigate('/profile')
-        action.resetForm();
+        try {
+          const user = await register(formData);
+          localStorage.setItem("user", JSON.stringify(user.data))
+          toast.success("Registration Success");
+          navigate('/profile')
+          action.resetForm(); 
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+       
       },
       onClick: (action) => {
         action.resetForm();
@@ -42,6 +47,7 @@ const Register = () => {
 
   return (
     <div className="register h-screen flex max-w-[1920px] px-4 py-5 gap-10">
+      <Toaster/>
       <div className="reg-left bg-myBackground bg-cover h-full w-3/6 rounded-3xl relative">
         <img src={heroIcon} alt=""  className="absolute top-6 left-6"/>
       </div>
