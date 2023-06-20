@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-// const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL })
 
-const API = axios.create({ baseURL: "http://localhost:5000"})
+
+const API = axios.create({ baseURL: "https://t42sgp-5000.csb.app"})
 
 API.interceptors.request.use((req)=>{
     if(localStorage.getItem('user')){
